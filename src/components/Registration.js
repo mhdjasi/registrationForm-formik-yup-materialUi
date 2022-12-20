@@ -5,7 +5,6 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import "yup-phone";
 
-import CloseIcon from "@material-ui/icons/Close";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -15,7 +14,6 @@ import {
   Button,
   Checkbox,
   FormHelperText,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -65,9 +63,7 @@ function Registration() {
 
 
 
-  const onSubmit =
-
-  async (values) => {
+  const onSubmit = async (values) => {
     const name = values.name;
     const email = values.email;
     const gender = values.gender;
@@ -98,10 +94,13 @@ function Registration() {
       })
       .catch((error) => {
         console.log(error);
-        alert("failed");
         setErr(true);
+        setTimeout(function () {
+          setErr(false);
+        }, 2000);
       });
 
+      //json api = "https://jsonplaceholder.typicode.com/posts"
     // fetch('https://779uecudth.execute-api.ap-south-1.amazonaws.com/register', {
     //   method: 'POST',
     //   headers: {
@@ -116,10 +115,27 @@ function Registration() {
 
   
 
-  const handleToClose = (event, reason) => {
-    if ("clickaway" == reason) return;
-    setOpen(false);
-  };
+
+
+  const message = () => {
+    var name = document.getElementById('name')
+    var email = document.getElementById('email')
+    var gender = document.getElementById('gender')
+    var phone = document.getElementById('phone')
+    var role = document.getElementById('role')
+    var password = document.getElementById('password')
+    var confirmpassword = document.getElementById('confirmpassword')
+    var checkbox = document.getElementById('checkbox')
+
+    if(name.value === "" || email.value === "" || gender.value === "" || phone.value === "" || role.value === "" || password.value === "" || confirmpassword.value === "" || checkbox.value === ""){
+      setErr(true);
+        setTimeout(function () {
+          setErr(false);
+        }, 2000);
+    }
+
+
+  }
 
   return (
     <div className="main">
@@ -135,6 +151,7 @@ function Registration() {
               <Field
                 as={TextField}
                 name="name"
+                id="name"
                 fullWidth
                 label="Full Name"
                 helperText={
@@ -146,6 +163,7 @@ function Registration() {
               <Field
                 as={TextField}
                 name="email"
+                id="email"
                 fullWidth
                 label="Email"
                 helperText={
@@ -162,6 +180,7 @@ function Registration() {
                   style={{ display: "initial" }}
                   aria-label="gender"
                   name="gender"
+                  id="gender"
                 >
                   <FormControlLabel
                     value="female"
@@ -184,6 +203,7 @@ function Registration() {
               <Field
                 as={TextField}
                 name="phone"
+                id="phone"
                 fullWidth
                 label="Phone Number"
                 helperText={
@@ -202,7 +222,7 @@ function Registration() {
                   as={Select}
                   name="role"
                   labelId="demo-simple-select-helper-label"
-                  id="demo-simple-select-helper"
+                  id="demo-simple-select-helper role"
                 >
                   <MenuItem value={"frontendDeveloper"}>
                     Frontend Developer
@@ -221,6 +241,7 @@ function Registration() {
               <Field
                 as={TextField}
                 name="password"
+                id="password"
                 fullWidth
                 label="Password"
                 type="password"
@@ -233,6 +254,7 @@ function Registration() {
               <Field
                 as={TextField}
                 name="confirmpassword"
+                id="confirmpassword"
                 fullWidth
                 label="Confirm Password"
                 type="password"
@@ -244,7 +266,7 @@ function Registration() {
               />
 
               <FormControlLabel
-                control={<Field as={Checkbox} name="checkbox" />}
+                control={<Field as={Checkbox} name="checkbox" id="checkbox" />}
                 helperText={
                   <ErrorMessage name="checkbox">
                     {(msg) => <div style={{ color: "red" }}>{msg}</div>}
@@ -259,7 +281,7 @@ function Registration() {
               </FormHelperText>
 
               <br></br>
-              <Button type="submit" variant="contained" color="primary">
+              <Button onClick={message} type="submit" variant="contained" color="primary">
                 Register
               </Button>
 
@@ -271,8 +293,21 @@ function Registration() {
                 open={open}
               >
                 <SnackbarContent
-                  message="Form Submitted"
+                  message="Form Submitted successfully"
                   style={{ backgroundColor: "green" }}
+                />
+              </Snackbar>
+
+              <Snackbar
+                anchorOrigin={{
+                  horizontal: "center",
+                  vertical: "top",
+                }}
+                open={err}
+              >
+                <SnackbarContent
+                  message="Form not Submitted"
+                  style={{ backgroundColor: "red" }}
                 />
               </Snackbar>
 
