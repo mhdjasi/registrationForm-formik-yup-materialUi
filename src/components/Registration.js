@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Registration.css";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import "yup-phone";
 
+import CloseIcon from "@material-ui/icons/Close";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -14,13 +15,20 @@ import {
   Button,
   Checkbox,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
+  SnackbarContent,
   TextField,
 } from "@material-ui/core";
+import axios from "axios";
 
 function Registration() {
+  const [open, setOpen] = useState(false);
+  const [err, setErr] = useState(false);
+
   const initialValues = {
     name: "",
     email: "",
@@ -55,9 +63,62 @@ function Registration() {
     checkbox: yup.string().oneOf(["true"], "Accept terms and conditions"),
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
-    alert("form submitted successfully");
+
+
+  const onSubmit =
+
+  async (values) => {
+    const name = values.name;
+    const email = values.email;
+    const gender = values.gender;
+    const phone = values.phone;
+    const role = values.role;
+    const password = values.password;
+    const confirmpassword = values.confirmpassword;
+    const checkbox = values.checkbox;
+
+    await axios
+      .post("https://jsonplaceholder.typicode.com/posts", {
+        email,
+        name,
+        gender,
+        phone,
+        role,
+        password,
+        confirmpassword,
+        checkbox,
+      })
+      .then((response) => {
+        console.log(response.data);
+        // alert("success")
+        setOpen(true);
+        setTimeout(function () {
+          setOpen(false);
+        }, 2000);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("failed");
+        setErr(true);
+      });
+
+    // fetch('https://779uecudth.execute-api.ap-south-1.amazonaws.com/register', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-type': 'application/json; charset=UTF-8',
+    //   },
+    //   body: JSON.stringify(name,email,gender,phone,role,password,confirmpassword,checkbox),
+    // }).then(res =>{
+    //   console.log(res);
+    // })
+  };
+
+
+  
+
+  const handleToClose = (event, reason) => {
+    if ("clickaway" == reason) return;
+    setOpen(false);
   };
 
   return (
@@ -201,6 +262,20 @@ function Registration() {
               <Button type="submit" variant="contained" color="primary">
                 Register
               </Button>
+
+              <Snackbar
+                anchorOrigin={{
+                  horizontal: "center",
+                  vertical: "top",
+                }}
+                open={open}
+              >
+                <SnackbarContent
+                  message="Form Submitted"
+                  style={{ backgroundColor: "green" }}
+                />
+              </Snackbar>
+
             </Form>
           )}
         </Formik>
