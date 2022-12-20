@@ -61,8 +61,6 @@ function Registration() {
     checkbox: yup.string().oneOf(["true"], "Accept terms and conditions"),
   });
 
-
-
   const onSubmit = async (values) => {
     const name = values.name;
     const email = values.email;
@@ -100,7 +98,7 @@ function Registration() {
         }, 2000);
       });
 
-      //json api = "https://jsonplaceholder.typicode.com/posts"
+    //json api = "https://jsonplaceholder.typicode.com/posts"
     // fetch('https://779uecudth.execute-api.ap-south-1.amazonaws.com/register', {
     //   method: 'POST',
     //   headers: {
@@ -112,30 +110,32 @@ function Registration() {
     // })
   };
 
-
-  
-
-
-
   const message = () => {
-    var name = document.getElementById('name')
-    var email = document.getElementById('email')
-    var gender = document.getElementById('gender')
-    var phone = document.getElementById('phone')
-    var role = document.getElementById('role')
-    var password = document.getElementById('password')
-    var confirmpassword = document.getElementById('confirmpassword')
-    var checkbox = document.getElementById('checkbox')
+    var name = document.getElementById("name");
+    var email = document.getElementById("email");
+    var gender = document.getElementById("gender");
+    var phone = document.getElementById("phone");
+    var role = document.getElementById("role");
+    var password = document.getElementById("password");
+    var confirmpassword = document.getElementById("confirmpassword");
+    var checkbox = document.getElementById("checkbox");
 
-    if(name.value === "" || email.value === "" || gender.value === "" || phone.value === "" || role.value === "" || password.value === "" || confirmpassword.value === "" || checkbox.value === ""){
+    if (
+      name.value === "" ||
+      email.value === "" ||
+      gender.value === "" ||
+      phone.value === "" ||
+      role.value === "" ||
+      password.value === "" ||
+      confirmpassword.value === "" ||
+      checkbox.value === ""
+    ) {
       setErr(true);
-        setTimeout(function () {
-          setErr(false);
-        }, 2000);
+      setTimeout(function () {
+        setErr(false);
+      }, 2000);
     }
-
-
-  }
+  };
 
   return (
     <div className="main">
@@ -281,7 +281,12 @@ function Registration() {
               </FormHelperText>
 
               <br></br>
-              <Button onClick={message} type="submit" variant="contained" color="primary">
+              <Button
+                onClick={message}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Register
               </Button>
 
@@ -310,7 +315,6 @@ function Registration() {
                   style={{ backgroundColor: "red" }}
                 />
               </Snackbar>
-
             </Form>
           )}
         </Formik>
